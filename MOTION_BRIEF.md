@@ -95,18 +95,24 @@ draws attention to itself, it's wrong.
 
 ## Content
 
-Three projects, real, deployed, linked:
+Four projects, real, deployed, linked:
   01  VibeMail Glass   Full-Stack · App · 2026
       A full-stack email client in a frosted-glass, fully monospaced
       interface — virtualised threads, instant search, Supabase backend.
       TypeScript, Next.js, Supabase, PostgreSQL
-      vibemail-fullstack.vercel.app
-  02  Music Player 2.0  Audio · Web App · 2026
+      vibemail-fullstack.vercel.app/demo
+  02  Waypoint   Geospatial · Web App · 2026
+      Editorial, photo-forward travel guides — authors pin places on an
+      interactive map, attach photos, and publish curated guides to a
+      public link.
+      TypeScript, Next.js, Supabase, PostGIS, MapLibre
+      ztm-waypoint.vercel.app
+  03  Music Player 2.0  Audio · Web App · 2026
       A rebuilt streaming player — queue, library, search and playback
       against a live music API, lifted to portfolio grade.
       TypeScript, React, Next.js
       ztm-music.vercel.app
-  03  Scoundrel Game · PWA · 2025
+  04  Scoundrel Game · PWA · 2025
       A strategic single-player dungeon card game. Installable, fully
       offline, built to feel native on any device.
       JavaScript, PWA, Service Worker
