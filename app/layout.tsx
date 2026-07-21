@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { site } from "@/lib/content";
@@ -12,10 +13,15 @@ const inter = Inter({
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: "600",
-  variable: "--font-space-grotesk",
+// Clash Display is served from Fontshare, not Google Fonts, so it is
+// self-hosted (ITF Free Font License permits this).
+const clashDisplay = localFont({
+  src: [
+    { path: "./fonts/ClashDisplay-Medium.woff2", weight: "500" },
+    { path: "./fonts/ClashDisplay-Semibold.woff2", weight: "600" },
+    { path: "./fonts/ClashDisplay-Bold.woff2", weight: "700" },
+  ],
+  variable: "--font-clash-display",
   display: "swap",
 });
 
@@ -30,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`${inter.variable} ${clashDisplay.variable}`}>
       <body>
         <a
           href="#main"

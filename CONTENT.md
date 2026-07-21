@@ -20,21 +20,37 @@
 
 I'm a Senior Developer at the Canadian Broadcasting Corporation with a passion for technology that started at age 12 when I built my first computer.
 
-### 02 — Teaching
-
-With 5 years of teaching experience in Canada and South Korea, I now combine my technical skills and educational background as an instructor for Zero to Mastery Academy.
-
-### 03 — The leap
+### 02 — The leap
 
 As a self-taught developer who landed a Senior Developer role after just 4 months of online learning, I understand the challenges of breaking into tech.
 
-### 04 — The mission
+### 03 — The craft
 
-I'm dedicated to creating high-quality, affordable courses that help students build real portfolio projects and confidently transition into web development careers.
+At the CBC, I work on election night television programming and design and build HTML graphics for the Olympics — front-end work that runs live on national broadcasts.
 
-### 05 — The goal
+### 04 — Teaching
 
-My goal is to make quality education accessible to everyone, regardless of their background or budget.
+With 5 years of teaching experience in Canada and South Korea, I now combine my technical skills and educational background as an instructor for Zero to Mastery Academy.
+
+### 05 — The mission
+
+I'm dedicated to creating high-quality, affordable courses that help students build real portfolio projects and confidently transition into web development careers — quality education accessible to everyone, regardless of background or budget.
+
+---
+
+## Latest Course Panel
+
+**Label:** Latest course
+
+**Title:** The Vibe Coding Bootcamp: Become an AI-Augmented Developer
+
+**Blurb:** An AI-first path into tech — master tools like Cursor, Copilot,
+Claude and Gemini, direct your vision, build real projects, and create a
+job-ready portfolio. Live on Zero to Mastery.
+
+**URL:** https://zerotomastery.io/courses/learn-vibe-coding/
+
+**Link label:** View the course
 
 ---
 
@@ -44,7 +60,9 @@ My goal is to make quality education accessible to everyone, regardless of their
 
 **Title:** Agentic Engineering course
 
-**Blurb:** A new course on building production-grade AI agents — in progress at Zero to Mastery.
+**Blurb:** Go from vibe-coding to Agentic Engineering — plan, direct, and
+ship products that survive contact with reality, with Claude Code, Cursor,
+Codex and Antigravity. In progress at Zero to Mastery.
 
 ---
 
@@ -53,7 +71,7 @@ My goal is to make quality education accessible to everyone, regardless of their
 Four projects, real and deployed. Order is intentional — the grid reads top
 to bottom.
 
-### 01 — VibeMail Glass
+### 01 — VibeMail
 
 - **Description:** A full-stack email client in a frosted-glass, fully
   monospaced interface — virtualised threads, instant search, Supabase backend.
@@ -74,7 +92,7 @@ to bottom.
 - **GitHub:** https://github.com/JacintoDesign/waypoint
 - **Screenshot:** `/waypoint.jpg`
 
-### 03 — Music Player 2.0
+### 03 — ZTM Music
 
 - **Description:** A rebuilt streaming player — queue, library, search and
   playback against a live music API, lifted to portfolio grade.

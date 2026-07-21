@@ -13,15 +13,15 @@ export interface Project {
   alt: string;
 }
 
+// Hero, contact, skills-band and footer copy below is carried over from the
+// v1 portfolio (motion-graphic-portfolio.vercel.app) at the user's request.
 export const hero = {
-  eyebrow: "Jacinto Wong · Senior Developer",
-  headline: "Interfaces that feel built, not bought.",
+  eyebrow:
+    "Senior Developer at CBC · Instructor at Zero to Mastery · Toronto, Canada",
+  name: { first: "Jacinto", second: "Design" },
   subhead:
-    "Senior developer with 8+ years shipping production front-ends — and 5+ years teaching other developers to do the same.",
-  ctas: [
-    { label: "See the work", href: "#work" },
-    { label: "Get in touch", href: "#contact" },
-  ],
+    "Crafting exceptional digital experiences through innovative design and cutting-edge technology.",
+  scrollHint: "Scroll",
 };
 
 export const about = {
@@ -40,42 +40,51 @@ export const about = {
     },
     {
       index: "02",
-      title: "Teaching",
-      body: "With 5 years of teaching experience in Canada and South Korea, I now combine my technical skills and educational background as an instructor for Zero to Mastery Academy.",
-    },
-    {
-      index: "03",
       title: "The leap",
       body: "As a self-taught developer who landed a Senior Developer role after just 4 months of online learning, I understand the challenges of breaking into tech.",
     },
     {
+      index: "03",
+      title: "The craft",
+      body: "At the CBC, I work on election night television programming and design and build HTML graphics for the Olympics — front-end work that runs live on national broadcasts.",
+    },
+    {
       index: "04",
-      title: "The mission",
-      body: "I'm dedicated to creating high-quality, affordable courses that help students build real portfolio projects and confidently transition into web development careers.",
+      title: "Teaching",
+      body: "With 5 years of teaching experience in Canada and South Korea, I now combine my technical skills and educational background as an instructor for Zero to Mastery Academy.",
     },
     {
       index: "05",
-      title: "The goal",
-      body: "My goal is to make quality education accessible to everyone, regardless of their background or budget.",
+      title: "The mission",
+      body: "I'm dedicated to creating high-quality, affordable courses that help students build real portfolio projects and confidently transition into web development careers — quality education accessible to everyone, regardless of background or budget.",
     },
   ],
+  latestCourse: {
+    label: "Latest course",
+    // Rendered as two lines, broken after the colon.
+    titleLines: ["The Vibe Coding Bootcamp:", "Become an AI-Augmented Developer"],
+    blurb:
+      "An AI-first path into tech — master tools like Cursor, Copilot, Claude and Gemini, direct your vision, build real projects, and create a job-ready portfolio. Live on Zero to Mastery.",
+    url: "https://zerotomastery.io/courses/learn-vibe-coding/",
+    linkLabel: "View the course",
+  },
   nowPanel: {
     label: "Currently building",
     title: "Agentic Engineering course",
     blurb:
-      "A new course on building production-grade AI agents — in progress at Zero to Mastery.",
+      "Go from vibe-coding to Agentic Engineering — plan, direct, and ship products that survive contact with reality, with Claude Code, Cursor, Codex and Antigravity. In progress at Zero to Mastery.",
   },
 };
 
 export const projectsSection = {
   eyebrow: "Selected work",
-  heading: "Four projects, real and deployed.",
+  heading: "Things I've Built",
 };
 
 export const projects: Project[] = [
   {
     index: "01",
-    title: "VibeMail Glass",
+    title: "VibeMail",
     tags: ["Full-Stack", "App", "2026"],
     description:
       "A full-stack email client in a frosted-glass, fully monospaced interface — virtualised threads, instant search, Supabase backend.",
@@ -83,7 +92,7 @@ export const projects: Project[] = [
     liveUrl: "https://vibemail-fullstack.vercel.app/demo",
     githubUrl: "https://github.com/JacintoDesign/vibemail-fullstack",
     screenshot: "/vibemail.jpg",
-    alt: "VibeMail Glass — frosted-glass, monospaced email client interface",
+    alt: "VibeMail — frosted-glass, monospaced email client interface",
   },
   {
     index: "02",
@@ -99,7 +108,7 @@ export const projects: Project[] = [
   },
   {
     index: "03",
-    title: "Music Player 2.0",
+    title: "ZTM Music",
     tags: ["Audio", "Web App", "2026"],
     description:
       "A rebuilt streaming player — queue, library, search and playback against a live music API, lifted to portfolio grade.",
@@ -107,7 +116,7 @@ export const projects: Project[] = [
     liveUrl: "https://ztm-music.vercel.app",
     githubUrl: "https://github.com/JacintoDesign/ztm-music-player-v2",
     screenshot: "/music.jpg",
-    alt: "Music Player 2.0 — streaming player with queue, library and search",
+    alt: "ZTM Music — streaming player with queue, library and search",
   },
   {
     index: "04",
@@ -125,13 +134,75 @@ export const projects: Project[] = [
 
 export const contact = {
   eyebrow: "Contact",
-  heading: "Get in touch.",
-  supporting: "Or email me directly at",
+  heading: "Let's build something.",
+  supporting:
+    "Have a project, a course idea, or just want to say hello? My inbox is always open.",
   email: "contact@jacinto.design",
+  location: "Toronto, Canada",
+  form: {
+    name: { label: "Name", placeholder: "Your name" },
+    email: { label: "Email", placeholder: "your.email@example.com" },
+    message: {
+      label: "Message",
+      placeholder: "Tell me about your project or just say hello...",
+    },
+    submit: "Send message",
+  },
+};
+
+export interface ElsewhereLink {
+  label: string;
+  handle: string;
+  href: string;
+}
+
+export const elsewhere: ElsewhereLink[] = [
+  { label: "Website", handle: "jacinto.design", href: "https://jacinto.design" },
+  {
+    label: "LinkedIn",
+    handle: "in/jacintowong",
+    href: "https://www.linkedin.com/in/jacintowong/",
+  },
+  {
+    label: "GitHub",
+    handle: "JacintoDesign",
+    href: "https://github.com/JacintoDesign",
+  },
+  {
+    label: "Medium",
+    handle: "@jacintowong",
+    href: "https://jacintowong.medium.com",
+  },
+  {
+    label: "CodePen",
+    handle: "jacintodesign",
+    href: "https://codepen.io/jacintodesign",
+  },
+];
+
+export const skillsBand = [
+  "Motion Design",
+  "WebGL",
+  "Three.js",
+  "GSAP",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Creative Development",
+];
+
+export const footer = {
+  locationEyebrow: "Based in Toronto, Canada",
+  wordmark: { first: "Jacinto", second: "Design" },
+  elsewhereLabel: "Elsewhere",
+  backToTop: "Back to top",
+  copyright: "© 2026 Jacinto Design Inc. All rights reserved.",
+  builtWith: "Built with Next.js, Three.js & WebGL.",
 };
 
 export const site = {
   name: "Jacinto Wong",
+  logo: "JD",
   title: "Jacinto Wong — Senior Front-End Developer",
   description:
     "Senior developer and educator building production-grade web interfaces. Selected work, real and deployed.",

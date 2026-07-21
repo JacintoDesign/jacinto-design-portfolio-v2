@@ -34,8 +34,12 @@ Define as CSS variables. Never hardcode a hex in a component.
 `--accent` is for links, focus and active states only. If something is
 cyan, it is interactive.
 
-Type: Space Grotesk 600 for display, Inter 400/500 for body, both via
-`next/font/google`. No other families.
+Type: Clash Display 500/600/700 for display, self-hosted via
+`next/font/local` (Fontshare, ITF Free Font License — files in
+`app/fonts/`). Inter 400/500 for body via `next/font/google`. Small
+uppercase micro-labels (nav, eyebrows, tags, form labels) use the
+system mono stack via the `mono-label` utility — 11px, tracked +0.18em.
+No other families.
 
 Layout: airy, wide margins, narrow content column, 12px card radius,
 responsive 360–1920px. Semantic HTML, keyboard reachable throughout.
@@ -59,4 +63,4 @@ _Lifted when the scroll work begins. If a change would add movement, don't make 
 ## Never
 
 Invent content · add a dependency without asking · add a preloader,
-splash screen, or custom cursor · change the palette or type unasked
+splash screen · change the palette or type unasked

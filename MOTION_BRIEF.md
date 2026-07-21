@@ -19,9 +19,11 @@ Palette:
   Cyan         #4DD8E8   single accent — links, focus, active state only
 
 Type:
-  Display      Space Grotesk (600) — headings, project titles
-  Body         Inter (400/500) — prose, metadata, UI
-  Two families, no more. Display goes big and tight; body stays quiet.
+  Display      Clash Display (500/600/700) — headings, wordmark, project titles
+  Body         Inter (400/500) — prose, UI
+  Micro        system mono stack — 11px uppercase labels: nav, eyebrows, tags
+  Two loaded families plus the system mono, no more. Display goes big
+  and tight; body stays quiet; labels run small and tracked wide.
 
 Space: Airy. Wide outer margins, generous vertical rhythm between parts.
        Soft corners (12px) on cards, nothing sharper. Content column
@@ -88,7 +90,6 @@ draws attention to itself, it's wrong.
 - Preloader with a percentage counter — cut. This site ships as kilobytes;
   a loading screen would be adding perceived wait to look serious. If the
   shader needs a beat to compile, that's a fade-in, not a progress bar.
-- Custom cursor — cut. Costs a real cursor, gains a gimmick.
 - Magnetic buttons — cut. Fun to build, mildly annoying to use.
 - SplitText on body copy — cut. Restricted to the hero headline only.
   If everything reveals, nothing reads as important.
@@ -96,7 +97,7 @@ draws attention to itself, it's wrong.
 ## Content
 
 Four projects, real, deployed, linked:
-  01  VibeMail Glass   Full-Stack · App · 2026
+  01  VibeMail   Full-Stack · App · 2026
       A full-stack email client in a frosted-glass, fully monospaced
       interface — virtualised threads, instant search, Supabase backend.
       TypeScript, Next.js, Supabase, PostgreSQL
@@ -107,7 +108,7 @@ Four projects, real, deployed, linked:
       public link.
       TypeScript, Next.js, Supabase, PostGIS, MapLibre
       ztm-waypoint.vercel.app
-  03  Music Player 2.0  Audio · Web App · 2026
+  03  ZTM Music  Audio · Web App · 2026
       A rebuilt streaming player — queue, library, search and playback
       against a live music API, lifted to portfolio grade.
       TypeScript, React, Next.js
@@ -117,6 +118,11 @@ Four projects, real, deployed, linked:
       offline, built to feel native on any device.
       JavaScript, PWA, Service Worker
       ztm-scoundrel-game.vercel.app
+
+Courses, on the about panels:
+  The Vibe Coding Bootcamp: Become an AI-Augmented Developer — live,
+  linked: zerotomastery.io/courses/learn-vibe-coding
+  Agentic Engineering course — in progress at Zero to Mastery
 
 Contact: contact@jacinto.design — form posts and is tested end to end
 before ship.
