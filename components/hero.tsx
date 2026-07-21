@@ -1,4 +1,5 @@
 import { hero } from "@/lib/content";
+import { ShaderBackground } from "@/components/shader-background";
 
 export function Hero() {
   return (
@@ -6,7 +7,7 @@ export function Hero() {
       aria-labelledby="hero-heading"
       className="relative flex min-h-svh w-full flex-col bg-bg"
     >
-      {/* Shader canvas mounts here at inset-0 z-0 in the motion phase. */}
+      <ShaderBackground />
       <div className="relative z-10 mx-auto flex w-full max-w-[68rem] flex-1 flex-col px-6 pt-16 sm:px-10">
         <div className="my-auto">
           <p className="mono-label text-muted">{hero.eyebrow}</p>
