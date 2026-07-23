@@ -30,6 +30,7 @@ export function HeroIntro() {
   const uniforms = useNebulaUniforms();
   // Refilled on every re-split, so the ticker never drives stale nodes.
   const driftSetters = useRef<((value: number) => void)[]>([]);
+  const introDone = useRef(false);
 
   useGSAP(
     () => {
@@ -41,12 +42,26 @@ export function HeroIntro() {
           driftSetters.current = self.masks.map(
             (m) => gsap.quickSetter(m, "xPercent") as (value: number) => void,
           );
+          // Re-splits (resize) after the intro has finished get fresh,
+          // already-visible line nodes — nothing to replay.
+          if (introDone.current) return;
+          // The eyebrow and subhead survive re-splits, unlike the lines —
+          // a font-load re-split can kill this timeline mid-fade, so both
+          // of their states must be explicit (fromTo): a rebuilt from()
+          // would capture the half-faded state as its target and leave
+          // them stuck nearly invisible.
           return gsap
-            .timeline({ defaults: { ease: "power3.out" } })
+            .timeline({
+              defaults: { ease: "power3.out" },
+              onComplete: () => {
+                introDone.current = true;
+              },
+            })
             .from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.15 })
-            .from(
+            .fromTo(
               "[data-hero-follow]",
-              { autoAlpha: 0, y: 24, duration: 1.0, stagger: 0.15 },
+              { autoAlpha: 0, y: 24 },
+              { autoAlpha: 1, y: 0, duration: 1.0, stagger: 0.15 },
               0.6,
             );
         },
