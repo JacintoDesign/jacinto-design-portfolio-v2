@@ -1,4 +1,5 @@
 import { about } from "@/lib/content";
+import { AboutHeading } from "@/components/about-heading";
 
 export function About() {
   return (
@@ -13,12 +14,7 @@ export function About() {
             01<span aria-hidden="true"> / </span>
             {about.eyebrow}
           </p>
-          <h2
-            id="about-heading"
-            className="mt-8 max-w-[46rem] font-display text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl"
-          >
-            {about.heading}
-          </h2>
+          <AboutHeading>{about.heading}</AboutHeading>
         </div>
 
         <dl className="mt-20 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:divide-x sm:divide-muted/20">

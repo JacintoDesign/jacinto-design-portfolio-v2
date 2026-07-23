@@ -44,21 +44,11 @@ No other families.
 Layout: airy, wide margins, narrow content column, 12px card radius,
 responsive 360–1920px. Semantic HTML, keyboard reachable throughout.
 
-## Current Phase: STATIC BUILD
+## Current phase: MOTION
 
-**No motion of any kind.**
+GSAP owns scroll-driven sequences - pinning, scrubbing, parallax, staggered reveals. Motion owns component-level interaction - hover, mount, exit.
 
-- No animation packages
-- No CSS transitions or tranforms
-- No `@keyframes`, no `animate-*` utilities
-- No scroll listeners, no IntersectionObserver, no entrance effects
-
-Elements render in their final state. 
-
-Structure *for* motion without building it: the hero is a real positioned full-bleed
-section that can be pinned later, project cards are discrete selectable elements, the headline is one element containing its text. The hero background is a flat fill of `--bg` - a shader replaces it later. 
-
-_Lifted when the scroll work begins. If a change would add movement, don't make it_
+Motion is restricted to what MOTION_BRIEF.md assigns. Don't add animation to a part the brief specifies as still.
 
 ## Never
 

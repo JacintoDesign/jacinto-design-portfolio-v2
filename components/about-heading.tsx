@@ -1,0 +1,38 @@
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+export function AboutHeading({ children }: { children: React.ReactNode }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.from(heading.current, {
+        autoAlpha: 0,
+        y: 32,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: heading.current,
+          start: "top 80%",
+        },
+      });
+    },
+    { scope: heading },
+  );
+
+  return (
+    <h2
+      id="about-heading"
+      ref={heading}
+      className="mt-8 max-w-[46rem] font-display text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl"
+    >
+      {children}
+    </h2>
+  );
+}

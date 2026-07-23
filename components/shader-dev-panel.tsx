@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Vector3 } from "three";
 import { hexToVec3, type NebulaUniforms } from "@/components/shader-background";
 
@@ -56,22 +56,27 @@ function snapshot(uniforms: NebulaUniforms) {
 export function ShaderDevPanel({ uniforms }: { uniforms: NebulaUniforms }) {
   const [defaults] = useState(() => snapshot(uniforms));
   const [values, setValues] = useState(defaults);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  // Handlers write through a ref — uniforms are three.js state, not React
+  // state, and the frozen-props rule only exempts refs.
+  const uniformsRef = useRef(uniforms);
 
   const setSlider = (key: SliderKey, v: number) => {
-    uniforms[key].value = v;
+    uniformsRef.current[key].value = v;
     setValues((s) => ({ ...s, sliders: { ...s.sliders, [key]: v } }));
   };
 
   const setColor = (key: ColorKey, hex: string) => {
-    uniforms[key].value.copy(hexToVec3(hex));
+    uniformsRef.current[key].value.copy(hexToVec3(hex));
     setValues((s) => ({ ...s, colors: { ...s.colors, [key]: hex } }));
   };
 
   const reset = () => {
-    for (const s of SLIDERS) uniforms[s.key].value = defaults.sliders[s.key];
+    const u = uniformsRef.current;
+    for (const s of SLIDERS) u[s.key].value = defaults.sliders[s.key];
     for (const c of COLORS)
-      uniforms[c.key].value.copy(hexToVec3(defaults.colors[c.key]));
+      u[c.key].value.copy(hexToVec3(defaults.colors[c.key]));
     setValues(defaults);
   };
 

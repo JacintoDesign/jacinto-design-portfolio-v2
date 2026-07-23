@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { ShaderDevPanel } from "@/components/shader-dev-panel";
@@ -229,33 +229,47 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
 
   useEffect(() => () => material.dispose(), [material]);
 
+  // Per-frame writes go through the mesh ref — uniforms are three.js state,
+  // not React state, and the frozen-props rule only exempts refs.
+  const meshRef = useRef<THREE.Mesh>(null);
+
   useFrame(({ clock, size, viewport }, delta) => {
-    uniforms.uTime.value = clock.elapsedTime;
-    uniforms.uResolution.value.set(
+    const mat = meshRef.current?.material as THREE.ShaderMaterial | undefined;
+    if (!mat) return;
+    const u = mat.uniforms as unknown as NebulaUniforms;
+    u.uTime.value = clock.elapsedTime;
+    u.uResolution.value.set(
       size.width * viewport.dpr,
       size.height * viewport.dpr,
     );
     // Lag behind the cursor and settle — frame-rate independent damping.
-    uniforms.uPointer.value.lerp(
+    u.uPointer.value.lerp(
       pointerTarget.current,
-      1 - Math.exp(-delta * uniforms.uDamping.value),
+      1 - Math.exp(-delta * u.uDamping.value),
     );
   });
 
   return (
-    <mesh frustumCulled={false} material={material}>
+    <mesh ref={meshRef} frustumCulled={false} material={material}>
       <planeGeometry args={[2, 2]} />
     </mesh>
   );
 }
 
-export function ShaderBackground() {
-  const [uniforms, setUniforms] = useState<NebulaUniforms | null>(null);
+const subscribeNever = () => () => {};
 
-  // Uniform defaults read the CSS tokens, so creation waits for the client.
-  useEffect(() => {
-    setUniforms(createUniforms());
-  }, []);
+export function ShaderBackground() {
+  // Uniform defaults read the CSS tokens, so creation waits for the client;
+  // the false server snapshot keeps hydration consistent without an effect.
+  const isClient = useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  );
+  const uniforms = useMemo(
+    () => (isClient ? createUniforms() : null),
+    [isClient],
+  );
 
   if (!uniforms) return null;
 
