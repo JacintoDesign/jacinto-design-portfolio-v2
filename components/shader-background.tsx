@@ -134,15 +134,24 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
+  // hash() breaks down at the large coordinates stars feed it — fp32 fract
+  // quantizes and the points snap into rows. This one stays stable there.
+  float starHash(vec2 p) {
+    vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
+  }
+
   float stars(vec2 frag, float t) {
-    // Sparse grid of single-pixel points, drifting very slowly.
+    // Sparse scatter of single-pixel points, drifting very slowly.
     vec2 p = frag / 2.5 + vec2(t * 1.5, t * 0.6);
     vec2 cell = floor(p);
-    float rnd = hash(cell);
-    float star = step(0.997, rnd);
-    // Fade each point by its distance to the cell centre so it stays small.
-    float d = length(fract(p) - 0.5);
-    return star * smoothstep(0.5, 0.0, d) * (0.3 + 0.7 * hash(cell + 7.31));
+    float rnd = starHash(cell);
+    float star = step(0.99775, rnd);
+    // Jitter each point inside its cell, fading by distance so it stays small.
+    vec2 offset = vec2(starHash(cell + 17.0), starHash(cell + 43.0));
+    float d = length(fract(p) - offset);
+    return star * smoothstep(0.5, 0.0, d) * (0.3 + 0.7 * starHash(cell + 7.31));
   }
 
   void main() {
