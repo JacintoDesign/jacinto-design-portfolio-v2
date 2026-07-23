@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 /**
  * The shared nebula uniforms object — one mutable store for everything the
- * hero's live surface reads per frame. The shader material holds it by
+ * page's live surface reads per frame. The shader material holds it by
  * reference, the dev panel writes into it, and the wordmark treatments read
  * the already-eased pointer and scroll values from it, so type and field
  * move with exactly the same lag. Created client-side only (defaults read
@@ -30,6 +30,15 @@ export type NebulaUniforms = {
   // max opposite line drift (% of line width) and max cursor lean (px).
   uMarkDrift: { value: number };
   uMarkLean: { value: number };
+  // Ground (MOTION_BRIEF Look): past the hero the field recedes until it
+  // reads as texture. uGround eases toward uGroundTarget (raw scrub
+  // progress, CPU side); the rest tune how far it recedes.
+  uGround: { value: number };
+  uGroundTarget: { value: number };
+  // Consumed on the CPU side (clock rate at full ground), not in GLSL.
+  uGroundSpeed: { value: number };
+  uGroundScale: { value: number };
+  uGroundFade: { value: number };
   uTravel: { value: number };
   uDepth: { value: number };
   uGlowSettle: { value: number };
@@ -77,6 +86,11 @@ function createUniforms(): NebulaUniforms {
     uScrubLag: { value: 1 },
     uMarkDrift: { value: 8 },
     uMarkLean: { value: 6 },
+    uGround: { value: 0 },
+    uGroundTarget: { value: 0 },
+    uGroundSpeed: { value: 0.35 },
+    uGroundScale: { value: 0.6 },
+    uGroundFade: { value: 0.55 },
     uTravel: { value: 2.4 },
     uDepth: { value: 0.6 },
     uGlowSettle: { value: 0.9 },

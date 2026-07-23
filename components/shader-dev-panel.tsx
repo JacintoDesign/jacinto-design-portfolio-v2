@@ -47,6 +47,14 @@ const SECTIONS = [
     ],
   },
   {
+    title: "Ground",
+    sliders: [
+      { key: "uGroundFade", label: "Fade", min: 0, max: 1, step: 0.01, dp: 2 },
+      { key: "uGroundScale", label: "Scale", min: 0.3, max: 1, step: 0.01, dp: 2 },
+      { key: "uGroundSpeed", label: "Speed", min: 0, max: 1, step: 0.01, dp: 2 },
+    ],
+  },
+  {
     title: "Wordmark",
     sliders: [
       { key: "uMarkDrift", label: "Drift", min: 0, max: 8, step: 0.1, dp: 1 },

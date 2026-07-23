@@ -28,6 +28,8 @@ Type:
 Space: Airy. Wide outer margins, generous vertical rhythm between parts.
        Soft corners (12px) on cards, nothing sharper. Content column
        narrower than it wants to be — let the void do the work.
+       
+Ground: the shader runs behind the whole page, not just the hero - but it recedes after passing the hero section: lower intensity, slower, larger, until it reads as texture rather than motion. 
 
 ## Motion direction
 
@@ -59,12 +61,10 @@ draws attention to itself, it's wrong.
 
 ## About  [content part]
 
-- Treatment: the beats fade and rise as they enter, one after another
+- Treatment: the five story beats sit on one horizontal track - the sections pin and scroll scrubs sideways through them, one beat per screen, index numbers and a hairline marking the travel. 
 - Treatment: the three stats count up once, on first sight
-- Treatment: otherwise still — the nebula is far behind here and barely moves
-- Why: this section is read, not watched. The reveal paces the beats so
-  they arrive one at a time instead of as a wall. Heavier motion would
-  fight the words, which are the only thing that matters here.
+- Treatment: otherwise still — the heading holds
+- Why: the story is chronological, and horizontal travel makes form match content. Still 'read, not watched' - one beat on screen at a time paces the reading instead of stacking it into a wall, and nothing moves while a beat is being read. 
 
 ## Project grid  [content part]
 

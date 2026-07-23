@@ -15,12 +15,18 @@ import {
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 /**
- * Full-screen nebula shader behind the hero — slow drift of indigo, violet
- * and magenta clouds over the near-black void, cyan catching the cloud
- * edges, faint stars behind, a soft glow at the centre. The field drifts
- * toward the (eased) pointer, and the hero pins for 1.5 viewport heights
- * while scroll scrubs uScroll 0→1: the field travels vertically and
+ * Full-page nebula shader — a fixed layer behind everything: slow drift of
+ * indigo, violet and magenta clouds over the near-black void, cyan catching
+ * the cloud edges, faint stars behind, a soft glow at the centre. The field
+ * drifts toward the (eased) pointer, and the hero pins for 1.5 viewport
+ * heights while scroll scrubs uScroll 0→1: the field travels vertically and
  * deepens, the palette evolves, and the central glow settles back.
+ *
+ * Ground (MOTION_BRIEF Look): after passing the hero the field recedes —
+ * uGround scrubs 0→1 as About rises through the viewport, dimming the
+ * field toward the void, slowing its clock, growing its features and
+ * releasing the pointer parallax, until it reads as texture rather than
+ * motion behind the rest of the page.
  *
  * The uniforms object comes from NebulaProvider (see nebula-uniforms.tsx);
  * every tunable value is a uniform so the dev-only panel can adjust them
@@ -54,6 +60,9 @@ const fragmentShader = /* glsl */ `
   uniform float uEdge;
   uniform float uStars;
   uniform float uGrain;
+  uniform float uGround;
+  uniform float uGroundScale;
+  uniform float uGroundFade;
   uniform vec3 uBg;
   uniform vec3 uIndigo;
   uniform vec3 uViolet;
@@ -117,8 +126,10 @@ const fragmentShader = /* glsl */ `
     float t = uTime * uSpeed;
     float tc = uTime * uDrift;
 
-    // The whole field drifts toward the (already eased) pointer.
-    vec2 sp = (p - uPointer * uParallax) * uScale;
+    // The whole field drifts toward the (already eased) pointer. The ground
+    // releases the parallax and grows the features — larger, stiller.
+    vec2 sp = (p - uPointer * uParallax * (1.0 - 0.7 * uGround)) * uScale
+      * mix(1.0, uGroundScale, uGround);
 
     // Scrubbing the pinned hero descends through the field — a receding
     // zoom plus vertical travel, so scroll reads as motion through space.
@@ -155,7 +166,7 @@ const fragmentShader = /* glsl */ `
     // It settles back with scroll — tighter and dimmer, a light receding.
     vec2 gp = p - uPointer * uParallax * 1.6;
     float glow = exp(-dot(gp, gp) * (1.6 + 1.2 * s * uGlowSettle));
-    col += (uViolet * 0.30 + uMagenta * 0.12) * glow * uGlow * max(1.0 - 0.75 * s * uGlowSettle, 0.0);
+    col += (uViolet * 0.30 + uMagenta * 0.12) * glow * uGlow * max(1.0 - 0.75 * s * uGlowSettle, 0.0) * (1.0 - 0.85 * uGround);
 
     // Deepen: the whole cloud field settles toward the void as scroll ends.
     col = mix(col, uBg, min(s * uDepth * 0.3, 1.0));
@@ -167,6 +178,10 @@ const fragmentShader = /* glsl */ `
     // Settle the corners back into the void.
     float vignette = smoothstep(1.9, 0.4, length(p * vec2(0.85, 1.0)));
     col = mix(uBg, col, vignette);
+
+    // Ground: everything — clouds, edge light, stars — settles toward the
+    // void together. The grain lands after, so texture is what remains.
+    col = mix(col, uBg, uGround * uGroundFade);
 
     // Fine animated grain — breaks up banding in the flat void.
     float grain = hash(gl_FragCoord.xy + vec2(fract(uTime) * 61.7, fract(uTime * 0.731) * 47.3));
@@ -213,11 +228,23 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
   // not React state, and the frozen-props rule only exempts refs.
   const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame(({ clock, size, viewport }, delta) => {
+  useFrame(({ size, viewport }, delta) => {
     const mat = meshRef.current?.material as THREE.ShaderMaterial | undefined;
     if (!mat) return;
     const u = mat.uniforms as unknown as NebulaUniforms;
-    u.uTime.value = clock.elapsedTime;
+    // uGround trails its scrubbed target with the same lag as uScroll.
+    u.uGround.value =
+      u.uScrubLag.value > 0.001
+        ? THREE.MathUtils.lerp(
+            u.uGround.value,
+            u.uGroundTarget.value,
+            1 - Math.exp((-3 * delta) / u.uScrubLag.value),
+          )
+        : u.uGroundTarget.value;
+    // The clock integrates a scaled delta instead of reading elapsed time,
+    // so the ground can slow the field without a phase jump.
+    u.uTime.value +=
+      delta * THREE.MathUtils.lerp(1, u.uGroundSpeed.value, u.uGround.value);
     u.uResolution.value.set(
       size.width * viewport.dpr,
       size.height * viewport.dpr,
@@ -256,19 +283,37 @@ export function ShaderBackground() {
   // progress to uScrollTarget — the shader does the travelling, the DOM
   // holds still. The scrub easing lives CPU-side in useFrame (uScrubLag),
   // so the dev panel can tune the lag live without rebuilding the trigger.
+  // A second trigger scrubs uGroundTarget 0→1 as About rises through the
+  // viewport, so the field recedes to texture once the hero is passed.
   useGSAP(
     () => {
-      const section = wrapperRef.current?.closest("section");
-      if (!uniforms || !section) return;
+      // Resolved by hand: selector text inside this scoped context would be
+      // looked up inside the canvas wrapper, where the sections don't live.
+      const hero = document.getElementById("hero");
+      const about = document.getElementById("about");
+      if (!uniforms || !hero || !about) return;
       ScrollTrigger.create({
-        trigger: section,
+        trigger: hero,
         start: "top top",
         end: "+=150%",
         pin: true,
+        // This pin waits for the uniforms, so it's created after triggers
+        // further down the page — but its spacer moves their start
+        // positions, so it must refresh before them.
+        refreshPriority: 1,
         onUpdate: (self) => {
           uniforms.uScrollTarget.value = self.progress;
         },
       });
+      ScrollTrigger.create({
+        trigger: about,
+        start: "top bottom",
+        end: "top top",
+        onUpdate: (self) => {
+          uniforms.uGroundTarget.value = self.progress;
+        },
+      });
+      ScrollTrigger.refresh();
     },
     { scope: wrapperRef, dependencies: [uniforms] },
   );
@@ -280,7 +325,7 @@ export function ShaderBackground() {
       <div
         ref={wrapperRef}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0"
+        className="pointer-events-none fixed inset-0 -z-10"
       >
         <Canvas dpr={[1, 2]} gl={{ antialias: false }} frameloop="always">
           <NebulaPlane uniforms={uniforms} />

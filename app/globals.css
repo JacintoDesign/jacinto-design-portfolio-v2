@@ -34,6 +34,19 @@
   text-transform: uppercase;
 }
 
+/* The About beats fall back to the vertical list unless the timeline can
+   earn its pin: desktop width, a fine hover-capable pointer, and motion
+   allowed. Must stay the exact complement of the gsap.matchMedia condition
+   in about-timeline.tsx. */
+@custom-variant beats-static {
+  @media (width < 64rem),
+    (prefers-reduced-motion: reduce),
+    (hover: none),
+    (pointer: coarse) {
+    @slot;
+  }
+}
+
 @utility text-outline {
   -webkit-text-stroke: 2px var(--color-fg);
   color: transparent;
@@ -50,6 +63,9 @@
   html {
     /* Keep anchor targets clear of the fixed header. */
     scroll-padding-top: 5rem;
+    /* The page is a vertical scroll, always — nothing (drifting wordmark
+       masks, canvas rounding in device emulators) may widen the document. */
+    overflow-x: clip;
   }
 
   body {

@@ -19,7 +19,9 @@ export function AboutHeading({ children }: { children: React.ReactNode }) {
         ease: "power3.out",
         scrollTrigger: {
           trigger: heading.current,
-          start: "top 80%",
+          // Fires once the heading is comfortably in view — at 80% the
+          // reveal was mostly over before anyone was looking at it.
+          start: "top 70%",
         },
       });
     },

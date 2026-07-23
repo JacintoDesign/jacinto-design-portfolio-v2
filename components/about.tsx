@@ -1,5 +1,8 @@
 import { about } from "@/lib/content";
 import { AboutHeading } from "@/components/about-heading";
+import { AboutStats } from "@/components/about-stats";
+import { AboutCards } from "@/components/about-cards";
+import { AboutTimeline } from "@/components/about-timeline";
 
 export function About() {
   return (
@@ -8,6 +11,8 @@ export function About() {
       aria-labelledby="about-heading"
       className="w-full py-24 sm:py-32"
     >
+      {/* Heading and stats stay in normal flow — the timeline below pins
+          on its own, full-bleed, so these scroll away above it. */}
       <div className="mx-auto w-full max-w-[68rem] px-6 sm:px-10">
         <div className="border-t border-muted/20 pt-10">
           <p className="mono-label text-muted">
@@ -17,37 +22,13 @@ export function About() {
           <AboutHeading>{about.heading}</AboutHeading>
         </div>
 
-        <dl className="mt-20 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:divide-x sm:divide-muted/20">
-          {about.stats.map((stat, i) => (
-            <div key={stat.label} className={i > 0 ? "sm:pl-10" : undefined}>
-              <dd className="font-display text-6xl tracking-tight sm:text-7xl">
-                {stat.value}
-              </dd>
-              <dt className="mono-label mt-3 text-muted">{stat.label}</dt>
-            </div>
-          ))}
-        </dl>
+        <AboutStats />
+      </div>
 
-        <ol className="mt-24 divide-y divide-muted/20 border-t border-muted/20">
-          {about.storyBeats.map((beat) => (
-            <li
-              key={beat.index}
-              className="grid gap-4 py-10 sm:grid-cols-[8rem_1fr] sm:gap-10"
-            >
-              <p className="font-display text-2xl tracking-tight text-muted">
-                {beat.index}
-              </p>
-              <div className="max-w-[42rem]">
-                <h3 className="font-display text-xl tracking-tight">
-                  {beat.title}
-                </h3>
-                <p className="mt-3 leading-relaxed text-muted">{beat.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+      <AboutTimeline />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+      <div className="mx-auto w-full max-w-[68rem] px-6 sm:px-10">
+        <AboutCards>
           <aside
             aria-labelledby="course-heading"
             className="rounded-card border border-muted/20 bg-surface p-8 sm:p-10"
@@ -94,7 +75,7 @@ export function About() {
               {about.nowPanel.blurb}
             </p>
           </aside>
-        </div>
+        </AboutCards>
       </div>
     </section>
   );
