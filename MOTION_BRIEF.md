@@ -50,6 +50,8 @@ draws attention to itself, it's wrong.
   to the visitor says "this was built, not bought" in a way no image can.
   Scrubbing makes the scroll feel like the visitor is directing it. The
   headline reveal paces the message instead of dumping it.
+- Treatment: the wordmark's two lines drift in the opposite directions as the pinned window scrubs - a few percent of their width at the most - and the whole mark leans a few pixels toward the cursor, with the same lag as the field. Adjustable in the dev panel. 
+- Why: ties the type to the surface it sits on - the hero reads as one built thing, not text over a video.  
 
   -> Transition into About: parallax depth on the background as the hero
      unpins — the field keeps drifting, slower, behind the content

@@ -1,0 +1,103 @@
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { SplitText } from "gsap/SplitText";
+import { hero } from "@/lib/content";
+import { useNebulaUniforms } from "@/components/nebula-uniforms";
+
+gsap.registerPlugin(useGSAP, SplitText);
+
+/**
+ * Hero intro reveal — the headline arrives a line at a time from behind a
+ * mask, then the eyebrow and subhead follow a beat behind. SplitText is
+ * restricted to this headline (MOTION_BRIEF: none on body copy). autoSplit
+ * waits for the display font and re-splits on resize, so the lines are
+ * never measured against fallback metrics; the returned timeline is killed
+ * and rebuilt by SplitText on each re-split.
+ *
+ * Wordmark treatments: the two lines drift in opposite directions as the
+ * pin scrubs, and the whole mark leans toward the cursor. Both read the
+ * already-eased uScroll and uPointer values from the shared uniforms every
+ * tick, so the type moves with exactly the same lag as the field. The
+ * drift targets the SplitText masks, not the lines — the lines animate
+ * vertically inside the overflow-clipped masks during the reveal, and
+ * drifting them horizontally would clip against their own mask edges.
+ */
+export function HeroIntro() {
+  const root = useRef<HTMLDivElement>(null);
+  const uniforms = useNebulaUniforms();
+  // Refilled on every re-split, so the ticker never drives stale nodes.
+  const driftSetters = useRef<((value: number) => void)[]>([]);
+
+  useGSAP(
+    () => {
+      SplitText.create("#hero-heading", {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit: (self) => {
+          driftSetters.current = self.masks.map(
+            (m) => gsap.quickSetter(m, "xPercent") as (value: number) => void,
+          );
+          return gsap
+            .timeline({ defaults: { ease: "power3.out" } })
+            .from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.15 })
+            .from(
+              "[data-hero-follow]",
+              { autoAlpha: 0, y: 24, duration: 1.0, stagger: 0.15 },
+              0.6,
+            );
+        },
+      });
+
+      const heading = root.current?.querySelector("h1");
+      if (!uniforms || !heading) return;
+      const u = uniforms;
+      const leanX = gsap.quickSetter(heading, "x", "px") as (v: number) => void;
+      const leanY = gsap.quickSetter(heading, "y", "px") as (v: number) => void;
+
+      const tick = () => {
+        const drift = u.uScroll.value * u.uMarkDrift.value;
+        const [top, bottom] = driftSetters.current;
+        if (top && bottom) {
+          top(-drift);
+          bottom(drift);
+        }
+        // uPointer is the field's eased pointer; its y is up-positive
+        // (GL space), so the screen-space lean flips it.
+        leanX(u.uPointer.value.x * u.uMarkLean.value);
+        leanY(-u.uPointer.value.y * u.uMarkLean.value);
+      };
+      gsap.ticker.add(tick);
+      return () => gsap.ticker.remove(tick);
+    },
+    { scope: root, dependencies: [uniforms] },
+  );
+
+  return (
+    <div ref={root} className="my-auto">
+      <p data-hero-follow className="mono-label text-muted">
+        {hero.eyebrow}
+      </p>
+      <h1
+        id="hero-heading"
+        className="mt-10 font-display font-bold leading-[0.85] tracking-tight uppercase"
+      >
+        <span className="block text-[clamp(3.5rem,14vw,13rem)]">
+          {hero.name.first}
+        </span>
+        <span className="text-outline block text-[clamp(3.5rem,14vw,13rem)]">
+          {hero.name.second}
+        </span>
+      </h1>
+      <p
+        data-hero-follow
+        className="mt-10 max-w-[34rem] text-lg leading-relaxed text-muted"
+      >
+        {hero.subhead}
+      </p>
+    </div>
+  );
+}
