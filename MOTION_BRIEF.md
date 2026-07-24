@@ -82,6 +82,11 @@ draws attention to itself, it's wrong.
 - Why: the conversion moment must be frictionless. Anything moving here
   competes with the one action I want, and a form that animates while
   you're filling it in is actively hostile. No treatment earns a place.
+  
+## Footer  [content part]
+
+- Treatment: the skills band loops as a slow, seamless marquee, and scroll velocity nudges it - faster while the page moves, settling back when it stops. Should remain still under prefers-reduced-motion.
+- Why: one flourish after the conversion moment, where nothing is left to compete with. The velocity link makes it feel wired to the page rather than looped like a GIF. 
 
 ## Excluded
 

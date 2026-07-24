@@ -1,28 +1,11 @@
-import { footer, elsewhere, skillsBand } from "@/lib/content";
+import { footer, elsewhere } from "@/lib/content";
 import { elsewhereIcons, ArrowUpIcon } from "@/components/icons";
+import { FooterMarquee } from "@/components/footer-marquee";
 
 export function Footer() {
   return (
     <footer className="w-full border-t border-muted/20 pt-16 pb-10">
-      {/* Static for now — becomes the marquee in the motion phase. */}
-      <ul
-        aria-label="Skills"
-        className="flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-4 border-b border-muted/20 px-6 pb-12 sm:px-10"
-      >
-        {skillsBand.map((skill, i) => (
-          <li
-            key={skill}
-            className="flex items-center gap-8 font-display text-2xl tracking-tight text-muted/70 sm:text-4xl"
-          >
-            {i > 0 && (
-              <span aria-hidden="true" className="text-magenta/70 text-xl">
-                ✦
-              </span>
-            )}
-            {skill}
-          </li>
-        ))}
-      </ul>
+      <FooterMarquee />
 
       <div className="mx-auto w-full max-w-[68rem] px-6 pt-16 sm:px-10">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
