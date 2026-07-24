@@ -11,10 +11,11 @@ gsap.registerPlugin(useGSAP, SplitText);
 
 /**
  * Hero intro reveal — the headline arrives a line at a time from behind a
- * mask, then the eyebrow and subhead follow a beat behind. SplitText is
+ * mask, then the eyebrow and subhead follow a beat behind on a separate
+ * one-shot timeline (see the comment at the fromTo). SplitText is
  * restricted to this headline (MOTION_BRIEF: none on body copy). autoSplit
  * waits for the display font and re-splits on resize, so the lines are
- * never measured against fallback metrics; the returned timeline is killed
+ * never measured against fallback metrics; the line timeline is killed
  * and rebuilt by SplitText on each re-split.
  *
  * Wordmark treatments: the two lines drift in opposite directions as the
@@ -34,6 +35,25 @@ export function HeroIntro() {
 
   useGSAP(
     () => {
+      // The eyebrow and subhead reveal on their own one-shot timeline,
+      // deliberately OUTSIDE the SplitText lifecycle: autoSplit kills and
+      // replays the timeline returned from onSplit on every re-split
+      // (font load, any width change), which could catch these mid-fade —
+      // or re-hide them long after the intro — depending on timing.
+      // Standalone, no re-split can ever touch them.
+      gsap.fromTo(
+        "[data-hero-follow]",
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.0,
+          stagger: 0.15,
+          ease: "power3.out",
+          delay: 0.6,
+        },
+      );
+
       SplitText.create("#hero-heading", {
         type: "lines",
         mask: "lines",
@@ -42,28 +62,21 @@ export function HeroIntro() {
           driftSetters.current = self.masks.map(
             (m) => gsap.quickSetter(m, "xPercent") as (value: number) => void,
           );
-          // Re-splits (resize) after the intro has finished get fresh,
+          // Re-splits (resize) after the reveal has finished get fresh,
           // already-visible line nodes — nothing to replay.
           if (introDone.current) return;
-          // The eyebrow and subhead survive re-splits, unlike the lines —
-          // a font-load re-split can kill this timeline mid-fade, so both
-          // of their states must be explicit (fromTo): a rebuilt from()
-          // would capture the half-faded state as its target and leave
-          // them stuck nearly invisible.
           return gsap
             .timeline({
-              defaults: { ease: "power3.out" },
               onComplete: () => {
                 introDone.current = true;
               },
             })
-            .from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.15 })
-            .fromTo(
-              "[data-hero-follow]",
-              { autoAlpha: 0, y: 24 },
-              { autoAlpha: 1, y: 0, duration: 1.0, stagger: 0.15 },
-              0.6,
-            );
+            .from(self.lines, {
+              yPercent: 110,
+              duration: 1.1,
+              stagger: 0.15,
+              ease: "power3.out",
+            });
         },
       });
 

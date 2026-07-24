@@ -1,6 +1,7 @@
 import { footer, elsewhere } from "@/lib/content";
 import { elsewhereIcons, ArrowUpIcon } from "@/components/icons";
 import { FooterMarquee } from "@/components/footer-marquee";
+import { FooterWordmark } from "@/components/footer-wordmark";
 
 export function Footer() {
   return (
@@ -13,19 +14,16 @@ export function Footer() {
             <p className="mono-label text-muted">
               {footer.locationEyebrow}
             </p>
-            <p className="mt-4 font-display text-[clamp(2.5rem,9vw,7rem)] leading-[0.9] tracking-tight">
-              {footer.wordmark.first}
-              <span className="text-gradient"> {footer.wordmark.second}</span>
-            </p>
+            <FooterWordmark />
             <p className="mt-10">
               <a
                 href="#main"
-                className="inline-flex items-center gap-3 text-sm text-muted hover:text-fg"
+                className="inline-flex items-center gap-3 text-sm text-muted transition-colors duration-300 hover:text-fg"
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full border border-muted/30">
                   <ArrowUpIcon className="h-4 w-4" />
                 </span>
-                {footer.backToTop}
+                <span className="link-sweep">{footer.backToTop}</span>
               </a>
             </p>
           </div>
@@ -43,7 +41,7 @@ export function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between gap-4 border-b border-muted/20 py-4 hover:text-accent"
+                      className="link-sweep flex items-center justify-between gap-4 border-b border-muted/20 py-4 transition-colors duration-300 hover:text-accent"
                     >
                       <span className="flex items-center gap-4">
                         <Icon className="h-5 w-5" />

@@ -29,9 +29,11 @@ export function About() {
 
       <div className="mx-auto w-full max-w-[68rem] px-6 sm:px-10">
         <AboutCards>
+          {/* The link's ::before stretches over the card, so the whole
+              card is the click target and its hover drives the sweep. */}
           <aside
             aria-labelledby="course-heading"
-            className="rounded-card border border-muted/20 bg-surface p-8 sm:p-10"
+            className="relative rounded-card border border-muted/20 bg-surface p-8 transition-[border-color,translate] duration-300 hover:border-accent/60 motion-safe:hover:-translate-y-1 sm:p-10"
           >
             <p className="mono-label text-muted">{about.latestCourse.label}</p>
             <h3
@@ -52,17 +54,21 @@ export function About() {
                 href={about.latestCourse.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-accent underline underline-offset-4"
+                className="text-sm text-accent before:absolute before:inset-0 before:content-['']"
               >
-                {about.latestCourse.linkLabel}
+                <span className="link-sweep pb-1">
+                  {about.latestCourse.linkLabel}
+                </span>
                 <span className="sr-only"> (opens in new tab)</span>
               </a>
             </p>
           </aside>
 
+          {/* No cyan border here — this panel carries no link, and the
+              palette reserves the accent for things you can act on. */}
           <aside
             aria-labelledby="now-heading"
-            className="rounded-card border border-muted/20 bg-surface p-8 sm:p-10"
+            className="rounded-card border border-muted/20 bg-surface p-8 transition-[translate] duration-300 motion-safe:hover:-translate-y-1 sm:p-10"
           >
             <p className="mono-label text-muted">{about.nowPanel.label}</p>
             <h3

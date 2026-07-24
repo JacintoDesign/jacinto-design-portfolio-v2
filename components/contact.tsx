@@ -27,7 +27,7 @@ export function Contact() {
             <p className="mt-8">
               <a
                 href={`mailto:${contact.email}`}
-                className="inline-flex items-center gap-2 font-display text-xl text-accent sm:text-2xl"
+                className="link-sweep inline-flex items-center gap-2 font-display text-xl text-accent sm:text-2xl"
               >
                 {contact.email}
                 <ArrowUpRightIcon className="h-5 w-5" />
@@ -91,7 +91,7 @@ export function Contact() {
             </div>
             <button
               type="submit"
-              className="self-start rounded-full bg-fg px-8 py-4 font-display text-sm text-bg"
+              className="cursor-pointer self-start rounded-full bg-fg px-8 py-4 font-display text-sm text-bg transition-colors duration-300 hover:bg-accent"
             >
               {contact.form.submit}
             </button>

@@ -63,14 +63,15 @@ draws attention to itself, it's wrong.
 
 - Treatment: the five story beats sit on one horizontal track - the sections pin and scroll scrubs sideways through them, one beat per screen, index numbers and a hairline marking the travel. 
 - Treatment: the three stats count up once, on first sight
+- Treatment: the two course cards fade up a beat apart on first sight, then lift a little on hover - and the one that links takes a cyan border with it
+- Why: the reveal gives the pair one arrival and then they hold, which is all a footnote to the story needs. The lift is the same calm hover language as the project cards, so there is one hover across the page. The cyan is the palette keeping its promise - it marks the card you can click, and it is the only colour in this part that means anything.
 - Treatment: otherwise still — the heading holds
 - Why: the story is chronological, and horizontal travel makes form match content. Still 'read, not watched' - one beat on screen at a time paces the reading instead of stacking it into a wall, and nothing moves while a beat is being read. 
 
 ## Project grid  [content part]
 
 - Treatment: each card reveals as it enters - the screenshot unmasks upward while the image settles form a slight overscale, then index, title and meta follow a beat behind; cards arrive as a staggered wave
-- Treatment: a small, calm lift on hover, with the cyan accent picking out
-  the border, a slight zoom on the screenshot
+- Treatment: a small, calm lift on hover, and a slight zoom on the screenshot. No cyan on the border here - the work is the colour.
 - Why: the unmask presents the screenshots as the evidence and the staggers leads the eye across the work in the order laid out, which is the one place choreography genuinely serves the reader. The hover confirms focus without demanding attention the work should be getting. Nothing spins, flips, or bounces.
 
   -> Transition into Contact: none — a clean, quiet arrival
@@ -87,6 +88,15 @@ draws attention to itself, it's wrong.
 
 - Treatment: the skills band loops as a slow, seamless marquee, and scroll velocity nudges it - faster while the page moves, settling back when it stops. Should remain still under prefers-reduced-motion.
 - Why: one flourish after the conversion moment, where nothing is left to compete with. The velocity link makes it feel wired to the page rather than looped like a GIF. 
+- Treatment: the wordmark is set like the hero headline, and its letters bounce one at a time as the cursor crosses them. Still under prefers-reduced-motion.
+- Why: the mark that led the visitor in signs the page off, and this is the one place on the site where a moment of play costs nothing - everything that had to be read has been read. It rewards a cursor that's still exploring rather than asking for attention: nothing moves until someone goes looking for it. 
+
+## Site-wide
+
+- Treatment: nav and footer links take an underline that sweeps in on hover
+- Treatment: past the hero, the nav bar takes a glassmorphic ground - blurred and slightly tinted - so it stays readable over copy and screenshots without blocking them.
+- Treatment: on narrow screens the bar collapses to the wordmark and a menu; the glass stays, the active-state tracking is desktop only 
+- Why: navigation stays reachable without sitting on the choreography, and the nav doubles as a quiet progress indicator. The glass is what lets one bar cross a shader, then text, then images, and read on all three. Every section stays reachable on every device. 
 
 ## Excluded
 

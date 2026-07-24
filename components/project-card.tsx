@@ -15,7 +15,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
  * a slight zoom on the screenshot, via Motion variants. The zoom lives on
  * its own wrapper between [data-mask] (GSAP owns its clip-path) and
  * [data-image] (GSAP owns its scale), so the two libraries never write
- * to the same transform. Border colour and link hovers are CSS.
+ * to the same transform. Link hovers are CSS.
  */
 const hoverTransition = { duration: 0.45, ease: "easeOut" as const };
 
@@ -123,7 +123,7 @@ export function ProjectCard({ project }: { project: Project }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline decoration-accent/40 underline-offset-4 transition-[text-decoration-color,text-underline-offset] duration-300 hover:decoration-accent hover:underline-offset-[6px]"
+              className="link-sweep pb-1 text-accent"
             >
               Visit
               <span className="sr-only">
@@ -135,7 +135,7 @@ export function ProjectCard({ project }: { project: Project }) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline decoration-accent/40 underline-offset-4 transition-[text-decoration-color,text-underline-offset] duration-300 hover:decoration-accent hover:underline-offset-[6px]"
+              className="link-sweep pb-1 text-accent"
             >
               GitHub
               <span className="sr-only">
@@ -148,7 +148,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
         <div
           data-mask
-          className="self-center overflow-hidden rounded-card border border-muted/20 transition-colors duration-500 group-hover:border-accent"
+          className="self-center overflow-hidden rounded-card border border-muted/20"
         >
           <motion.div variants={zoom}>
             <Image
