@@ -68,14 +68,10 @@ draws attention to itself, it's wrong.
 
 ## Project grid  [content part]
 
-- Treatment: the cards rise in as a wave when the grid comes into view,
-  each a beat behind the last
+- Treatment: each card reveals as it enters - the screenshot unmasks upward while the image settles form a slight overscale, then index, title and meta follow a beat behind; cards arrive as a staggered wave
 - Treatment: a small, calm lift on hover, with the cyan accent picking out
-  the border
-- Why: the stagger leads the eye across the work in the order I laid it
-  out, which is the one place choreography genuinely serves the reader.
-  The hover confirms focus without demanding attention the work should
-  be getting. Nothing spins, flips, or bounces.
+  the border, a slight zoom on the screenshot
+- Why: the unmask presents the screenshots as the evidence and the staggers leads the eye across the work in the order laid out, which is the one place choreography genuinely serves the reader. The hover confirms focus without demanding attention the work should be getting. Nothing spins, flips, or bounces.
 
   -> Transition into Contact: none — a clean, quiet arrival
      Why: the visitor is about to act. Stillness signals "this is the point."

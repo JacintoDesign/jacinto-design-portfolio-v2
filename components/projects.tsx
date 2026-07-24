@@ -1,5 +1,6 @@
 import { projects, projectsSection } from "@/lib/content";
 import { ProjectCard } from "@/components/project-card";
+import { SectionHeading } from "@/components/section-heading";
 
 export function Projects() {
   return (
@@ -14,12 +15,9 @@ export function Projects() {
             02<span aria-hidden="true"> / </span>
             {projectsSection.eyebrow}
           </p>
-          <h2
-            id="work-heading"
-            className="mt-8 max-w-[46rem] font-display text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl"
-          >
+          <SectionHeading id="work-heading">
             {projectsSection.heading}
-          </h2>
+          </SectionHeading>
         </div>
 
         <ul className="mt-20 divide-y divide-muted/20 border-t border-muted/20">

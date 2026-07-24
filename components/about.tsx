@@ -1,5 +1,5 @@
 import { about } from "@/lib/content";
-import { AboutHeading } from "@/components/about-heading";
+import { SectionHeading } from "@/components/section-heading";
 import { AboutStats } from "@/components/about-stats";
 import { AboutCards } from "@/components/about-cards";
 import { AboutTimeline } from "@/components/about-timeline";
@@ -19,7 +19,7 @@ export function About() {
             01<span aria-hidden="true"> / </span>
             {about.eyebrow}
           </p>
-          <AboutHeading>{about.heading}</AboutHeading>
+          <SectionHeading id="about-heading">{about.heading}</SectionHeading>
         </div>
 
         <AboutStats />

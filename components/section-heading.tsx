@@ -7,7 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-export function AboutHeading({ children }: { children: React.ReactNode }) {
+export function SectionHeading({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
   const heading = useRef<HTMLHeadingElement>(null);
 
   useGSAP(
@@ -30,7 +36,7 @@ export function AboutHeading({ children }: { children: React.ReactNode }) {
 
   return (
     <h2
-      id="about-heading"
+      id={id}
       ref={heading}
       className="mt-8 max-w-[46rem] font-display text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl"
     >
