@@ -47,7 +47,11 @@ draws attention to itself, it's wrong.
 - Treatment: pinned and scrubbed — as the visitor scrolls the pinned window,
   the field travels vertically and deepens, the palette evolves, and the
   central glow settles back
-- Treatment: the headline arrives a line at a time rather than all at once
+- Treatment: the headline arrives a line at a time rather than all at once,
+  the eyebrow and subhead fading up a beat behind it
+- Treatment: a scroll hint at the foot of the fold — a short segment looping
+  slowly down a hairline track, pointing the visitor into the scroll. Still
+  under prefers-reduced-motion.
 - Why: two seconds to establish the tier, and a live surface that responds
   to the visitor says "this was built, not bought" in a way no image can.
   Scrubbing makes the scroll feel like the visitor is directing it. The
@@ -61,8 +65,8 @@ draws attention to itself, it's wrong.
 
 ## About  [content part]
 
-- Treatment: the five story beats sit on one horizontal track - the sections pin and scroll scrubs sideways through them, one beat per screen, index numbers and a hairline marking the travel. 
-- Treatment: the three stats count up once, on first sight
+- Treatment: the five story beats sit on one horizontal track - the sections pin and scroll scrubs sideways through them, one beat per screen, index numbers and a hairline marking the travel - the number under the beat on screen lifts to full foreground. 
+- Treatment: the three stats fade up in a stagger and count up once, on first sight
 - Treatment: the two course cards fade up a beat apart on first sight, then lift a little on hover - and the one that links takes a cyan border with it
 - Why: the reveal gives the pair one arrival and then they hold, which is all a footnote to the story needs. The lift is the same calm hover language as the project cards, so there is one hover across the page. The cyan is the palette keeping its promise - it marks the card you can click, and it is the only colour in this part that means anything.
 - Treatment: otherwise still — the heading holds
@@ -79,10 +83,13 @@ draws attention to itself, it's wrong.
 
 ## Contact  [content part]
 
-- Treatment: still, by decision
+- Treatment: still, by decision. The one exception is hover feedback on
+  the actions themselves - the email link takes the site-wide sweep, and
+  the submit button answers hover with a colour shift.
 - Why: the conversion moment must be frictionless. Anything moving here
   competes with the one action I want, and a form that animates while
-  you're filling it in is actively hostile. No treatment earns a place.
+  you're filling it in is actively hostile. No treatment earns a place -
+  but the actions still have to answer the cursor, or the form reads dead.
   
 ## Footer  [content part]
 
@@ -93,9 +100,9 @@ draws attention to itself, it's wrong.
 
 ## Site-wide
 
-- Treatment: nav and footer links take an underline that sweeps in on hover
-- Treatment: past the hero, the nav bar takes a glassmorphic ground - blurred and slightly tinted - so it stays readable over copy and screenshots without blocking them.
-- Treatment: on narrow screens the bar collapses to the wordmark and a menu; the glass stays, the active-state tracking is desktop only 
+- Treatment: every link takes an underline that sweeps in on hover - nav, footer, project links, the email - one hover language for text across the page. Interactive text also shifts colour on hover, muted toward foreground in the chrome, toward cyan where the palette allows it; the sweep and the shift are the whole hover vocabulary for text.
+- Treatment: past the hero, the nav bar fades in a glassmorphic ground - blurred and slightly tinted - so it stays readable over copy and screenshots without blocking them.
+- Treatment: on narrow screens the bar collapses to the wordmark and a menu that fades and slides open and closed; the glass stays, the active-state tracking is desktop only 
 - Why: navigation stays reachable without sitting on the choreography, and the nav doubles as a quiet progress indicator. The glass is what lets one bar cross a shader, then text, then images, and read on all three. Every section stays reachable on every device. 
 
 ## Excluded

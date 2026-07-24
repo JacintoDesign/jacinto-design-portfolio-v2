@@ -35,71 +35,81 @@ export function HeroIntro() {
 
   useGSAP(
     () => {
-      // The eyebrow and subhead reveal on their own one-shot timeline,
-      // deliberately OUTSIDE the SplitText lifecycle: autoSplit kills and
-      // replays the timeline returned from onSplit on every re-split
-      // (font load, any width change), which could catch these mid-fade —
-      // or re-hide them long after the intro — depending on timing.
-      // Standalone, no re-split can ever touch them.
-      gsap.fromTo(
-        "[data-hero-follow]",
-        { autoAlpha: 0, y: 24 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.0,
-          stagger: 0.15,
-          ease: "power3.out",
-          delay: 0.6,
-        },
-      );
+      const mm = gsap.matchMedia();
+      // Everything below is skipped under reduced motion — the markup
+      // already reads finished (visible copy, unsplit headline), so
+      // there is nothing to un-hide and nothing to drive.
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // The eyebrow and subhead reveal on their own one-shot timeline,
+        // deliberately OUTSIDE the SplitText lifecycle: autoSplit kills and
+        // replays the timeline returned from onSplit on every re-split
+        // (font load, any width change), which could catch these mid-fade —
+        // or re-hide them long after the intro — depending on timing.
+        // Standalone, no re-split can ever touch them.
+        gsap.fromTo(
+          "[data-hero-follow]",
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1.0,
+            stagger: 0.15,
+            ease: "power3.out",
+            delay: 0.6,
+          },
+        );
 
-      SplitText.create("#hero-heading", {
-        type: "lines",
-        mask: "lines",
-        autoSplit: true,
-        onSplit: (self) => {
-          driftSetters.current = self.masks.map(
-            (m) => gsap.quickSetter(m, "xPercent") as (value: number) => void,
-          );
-          // Re-splits (resize) after the reveal has finished get fresh,
-          // already-visible line nodes — nothing to replay.
-          if (introDone.current) return;
-          return gsap
-            .timeline({
-              onComplete: () => {
-                introDone.current = true;
-              },
-            })
-            .from(self.lines, {
-              yPercent: 110,
-              duration: 1.1,
-              stagger: 0.15,
-              ease: "power3.out",
-            });
-        },
+        SplitText.create("#hero-heading", {
+          type: "lines",
+          mask: "lines",
+          autoSplit: true,
+          onSplit: (self) => {
+            driftSetters.current = self.masks.map(
+              (m) => gsap.quickSetter(m, "xPercent") as (value: number) => void,
+            );
+            // Re-splits (resize) after the reveal has finished get fresh,
+            // already-visible line nodes — nothing to replay.
+            if (introDone.current) return;
+            return gsap
+              .timeline({
+                onComplete: () => {
+                  introDone.current = true;
+                },
+              })
+              .from(self.lines, {
+                yPercent: 110,
+                duration: 1.1,
+                stagger: 0.15,
+                ease: "power3.out",
+              });
+          },
+        });
+
+        const heading = root.current?.querySelector("h1");
+        if (!uniforms || !heading) return;
+        const u = uniforms;
+        const leanX = gsap.quickSetter(heading, "x", "px") as (
+          v: number,
+        ) => void;
+        const leanY = gsap.quickSetter(heading, "y", "px") as (
+          v: number,
+        ) => void;
+
+        const tick = () => {
+          const drift = u.uScroll.value * u.uMarkDrift.value;
+          const [top, bottom] = driftSetters.current;
+          if (top && bottom) {
+            top(-drift);
+            bottom(drift);
+          }
+          // uPointer is the field's eased pointer; its y is up-positive
+          // (GL space), so the screen-space lean flips it.
+          leanX(u.uPointer.value.x * u.uMarkLean.value);
+          leanY(-u.uPointer.value.y * u.uMarkLean.value);
+        };
+        gsap.ticker.add(tick);
+        return () => gsap.ticker.remove(tick);
       });
-
-      const heading = root.current?.querySelector("h1");
-      if (!uniforms || !heading) return;
-      const u = uniforms;
-      const leanX = gsap.quickSetter(heading, "x", "px") as (v: number) => void;
-      const leanY = gsap.quickSetter(heading, "y", "px") as (v: number) => void;
-
-      const tick = () => {
-        const drift = u.uScroll.value * u.uMarkDrift.value;
-        const [top, bottom] = driftSetters.current;
-        if (top && bottom) {
-          top(-drift);
-          bottom(drift);
-        }
-        // uPointer is the field's eased pointer; its y is up-positive
-        // (GL space), so the screen-space lean flips it.
-        leanX(u.uPointer.value.x * u.uMarkLean.value);
-        leanY(-u.uPointer.value.y * u.uMarkLean.value);
-      };
-      gsap.ticker.add(tick);
-      return () => gsap.ticker.remove(tick);
     },
     { scope: root, dependencies: [uniforms] },
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -32,7 +32,27 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
  * every tunable value is a uniform so the dev-only panel can adjust them
  * live. The material holds the uniforms object by reference, so mutating
  * a `.value` anywhere reaches the GPU on the next frame.
+ *
+ * Under prefers-reduced-motion the canvas renders one frame on demand and
+ * stops — the receded ground state held still: no clock, no pointer, no
+ * scrub, and the hero never pins.
  */
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+// False during SSR; tracks the media query live on the client, so a toggle
+// switches the canvas between the frame loops without a reload.
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
 
 const vertexShader = /* glsl */ `
   // Fullscreen quad — bypass the camera entirely.
@@ -191,12 +211,19 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
+function NebulaPlane({
+  uniforms,
+  reduced,
+}: {
+  uniforms: NebulaUniforms;
+  reduced: boolean;
+}) {
   const gl = useThree((state) => state.gl);
   // Raw pointer target; uPointer eases toward it in useFrame.
   const pointerTarget = useRef(new THREE.Vector2(0, 0));
 
   useEffect(() => {
+    if (reduced) return;
     const onPointerMove = (e: PointerEvent) => {
       const rect = gl.domElement.getBoundingClientRect();
       pointerTarget.current.set(
@@ -206,7 +233,7 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
     };
     window.addEventListener("pointermove", onPointerMove);
     return () => window.removeEventListener("pointermove", onPointerMove);
-  }, [gl]);
+  }, [gl, reduced]);
 
   // Built imperatively so the material keeps this exact uniforms object —
   // the dev panel mutates the same entries.
@@ -232,6 +259,18 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
     const mat = meshRef.current?.material as THREE.ShaderMaterial | undefined;
     if (!mat) return;
     const u = mat.uniforms as unknown as NebulaUniforms;
+    u.uResolution.value.set(
+      size.width * viewport.dpr,
+      size.height * viewport.dpr,
+    );
+    // Reduced motion: frameloop is "demand", so this runs only on the
+    // frames the canvas must draw anyway (mount, resize). Hold the field
+    // at full ground — the receded texture — and advance nothing.
+    if (reduced) {
+      u.uGround.value = 1;
+      u.uGroundTarget.value = 1;
+      return;
+    }
     // uGround trails its scrubbed target with the same lag as uScroll.
     u.uGround.value =
       u.uScrubLag.value > 0.001
@@ -245,10 +284,6 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
     // so the ground can slow the field without a phase jump.
     u.uTime.value +=
       delta * THREE.MathUtils.lerp(1, u.uGroundSpeed.value, u.uGround.value);
-    u.uResolution.value.set(
-      size.width * viewport.dpr,
-      size.height * viewport.dpr,
-    );
     // Lag behind the cursor and settle — frame-rate independent damping.
     u.uPointer.value.lerp(
       pointerTarget.current,
@@ -276,6 +311,7 @@ function NebulaPlane({ uniforms }: { uniforms: NebulaUniforms }) {
 
 export function ShaderBackground() {
   const uniforms = useNebulaUniforms();
+  const reduced = usePrefersReducedMotion();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -287,33 +323,36 @@ export function ShaderBackground() {
   // viewport, so the field recedes to texture once the hero is passed.
   useGSAP(
     () => {
-      // Resolved by hand: selector text inside this scoped context would be
-      // looked up inside the canvas wrapper, where the sections don't live.
-      const hero = document.getElementById("hero");
-      const about = document.getElementById("about");
-      if (!uniforms || !hero || !about) return;
-      ScrollTrigger.create({
-        trigger: hero,
-        start: "top top",
-        end: "+=150%",
-        pin: true,
-        // This pin waits for the uniforms, so it's created after triggers
-        // further down the page — but its spacer moves their start
-        // positions, so it must refresh before them.
-        refreshPriority: 1,
-        onUpdate: (self) => {
-          uniforms.uScrollTarget.value = self.progress;
-        },
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Resolved by hand: selector text inside this scoped context would be
+        // looked up inside the canvas wrapper, where the sections don't live.
+        const hero = document.getElementById("hero");
+        const about = document.getElementById("about");
+        if (!uniforms || !hero || !about) return;
+        ScrollTrigger.create({
+          trigger: hero,
+          start: "top top",
+          end: "+=150%",
+          pin: true,
+          // This pin waits for the uniforms, so it's created after triggers
+          // further down the page — but its spacer moves their start
+          // positions, so it must refresh before them.
+          refreshPriority: 1,
+          onUpdate: (self) => {
+            uniforms.uScrollTarget.value = self.progress;
+          },
+        });
+        ScrollTrigger.create({
+          trigger: about,
+          start: "top bottom",
+          end: "top top",
+          onUpdate: (self) => {
+            uniforms.uGroundTarget.value = self.progress;
+          },
+        });
+        ScrollTrigger.refresh();
       });
-      ScrollTrigger.create({
-        trigger: about,
-        start: "top bottom",
-        end: "top top",
-        onUpdate: (self) => {
-          uniforms.uGroundTarget.value = self.progress;
-        },
-      });
-      ScrollTrigger.refresh();
     },
     { scope: wrapperRef, dependencies: [uniforms] },
   );
@@ -327,8 +366,12 @@ export function ShaderBackground() {
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-10"
       >
-        <Canvas dpr={[1, 2]} gl={{ antialias: false }} frameloop="always">
-          <NebulaPlane uniforms={uniforms} />
+        <Canvas
+          dpr={[1, 2]}
+          gl={{ antialias: false }}
+          frameloop={reduced ? "demand" : "always"}
+        >
+          <NebulaPlane uniforms={uniforms} reduced={reduced} />
         </Canvas>
       </div>
       {process.env.NODE_ENV !== "production" && (
