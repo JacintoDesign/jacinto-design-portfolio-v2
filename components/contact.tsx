@@ -1,4 +1,5 @@
 import { contact } from "@/lib/content";
+import { ContactForm } from "@/components/contact-form";
 import { ArrowUpRightIcon, MapPinIcon } from "@/components/icons";
 
 export function Contact() {
@@ -39,63 +40,7 @@ export function Contact() {
             </p>
           </div>
 
-          {/* Backend intentionally unwired this phase; connected and tested
-              end to end before ship. */}
-          <form className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="contact-name"
-                className="mono-label text-muted"
-              >
-                {contact.form.name.label}
-              </label>
-              <input
-                id="contact-name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                placeholder={contact.form.name.placeholder}
-                className="rounded-card border border-muted/30 bg-surface px-4 py-3 placeholder:text-muted/60"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="contact-email"
-                className="mono-label text-muted"
-              >
-                {contact.form.email.label}
-              </label>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder={contact.form.email.placeholder}
-                className="rounded-card border border-muted/30 bg-surface px-4 py-3 placeholder:text-muted/60"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="contact-message"
-                className="mono-label text-muted"
-              >
-                {contact.form.message.label}
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                rows={6}
-                placeholder={contact.form.message.placeholder}
-                className="resize-none rounded-card border border-muted/30 bg-surface px-4 py-3 placeholder:text-muted/60"
-              />
-            </div>
-            <button
-              type="submit"
-              className="cursor-pointer self-start rounded-full bg-fg px-8 py-4 font-display text-sm text-bg transition-colors duration-300 hover:bg-accent"
-            >
-              {contact.form.submit}
-            </button>
-          </form>
+          <ContactForm />
         </div>
       </div>
     </section>

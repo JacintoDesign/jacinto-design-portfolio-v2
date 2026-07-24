@@ -147,6 +147,18 @@ export const contact = {
       placeholder: "Tell me about your project or just say hello...",
     },
     submit: "Send message",
+    // Functional microcopy pending CONTENT.md review — flagged 2026-07-24.
+    errors: {
+      name: "Please enter your name.",
+      email: "Please enter a valid email address.",
+      message: "Please enter a message.",
+      messageLength: "Please keep your message under 5,000 characters.",
+    },
+    status: {
+      sending: "Sending…",
+      sent: "Message sent — I'll get back to you soon.",
+      failed: "Something went wrong. Please try again or email me directly.",
+    },
   },
 };
 
