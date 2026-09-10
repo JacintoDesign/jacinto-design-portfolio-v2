@@ -62,17 +62,23 @@ export const about = {
   latestCourse: {
     label: "Latest course",
     // Rendered as two lines, broken after the colon.
-    titleLines: ["The Vibe Coding Bootcamp:", "Become an AI-Augmented Developer"],
+    titleLines: [
+      "The Claude Code Bootcamp:",
+      "Design, Build, Test and Deploy with Claude",
+    ],
     blurb:
-      "An AI-first path into tech — master tools like Cursor, Copilot, Claude and Gemini, direct your vision, build real projects, and create a job-ready portfolio. Live on Zero to Mastery.",
-    url: "https://zerotomastery.io/courses/learn-vibe-coding/",
+      "Master Claude Code and Claude Design to plan, build, test and deploy production-ready web apps — from backend architecture to motion-rich interfaces. Live on Zero to Mastery.",
+    url: "https://zerotomastery.io/courses/claude-code-bootcamp/",
     linkLabel: "View the course",
   },
   nowPanel: {
-    label: "Currently building",
-    title: "Agentic Engineering course",
+    label: "Course",
+    // Rendered as two lines, broken after the colon.
+    titleLines: ["The Vibe Coding Bootcamp:", "Become an AI-Augmented Developer"],
     blurb:
-      "Go from vibe-coding to Agentic Engineering — plan, direct, and ship products that survive contact with reality, with Claude Code, Cursor, Codex and Antigravity. In progress at Zero to Mastery.",
+      "An AI-first path into tech — master tools like Cursor, Copilot, Claude and Gemini, direct your vision, build real projects, and create a job-ready portfolio. Live on Zero to Mastery.",
+    url: "https://academy.zerotomastery.io/a/aff_s02b4247/external?affcode=441520_7lacw2wa",
+    linkLabel: "View the course",
   },
 };
 
@@ -96,18 +102,78 @@ export const projects: Project[] = [
   },
   {
     index: "02",
-    title: "Waypoint",
-    tags: ["Geospatial", "Web App", "2026"],
+    title: "Astra",
+    tags: ["3D", "WebGL", "2026"],
     description:
-      "Editorial, photo-forward travel guides — authors pin places on an interactive map, attach photos, and publish curated guides to a public link.",
-    tech: ["TypeScript", "Next.js", "Supabase", "PostGIS", "MapLibre"],
-    liveUrl: "https://ztm-waypoint.vercel.app",
-    githubUrl: "https://github.com/JacintoDesign/waypoint",
-    screenshot: "/waypoint.jpg",
-    alt: "Waypoint — photo-forward travel guide with an interactive map",
+      "A cinematic 3D orbital observatory — a procedurally modeled habitat above a shader-generated planet, with camera tours and bloom.",
+    tech: ["JavaScript", "Three.js", "Vite"],
+    liveUrl: "https://ztm-astra-station.vercel.app",
+    githubUrl: "https://github.com/JacintoDesign/astra",
+    screenshot: "/astra.jpg",
+    alt: "Astra — cinematic 3D orbital observatory above a shader-generated planet",
   },
   {
     index: "03",
+    title: "Mars Colony",
+    tags: ["Game", "Simulation", "2026"],
+    description:
+      "An isometric Mars colony simulator — life support, mining and rover logistics against a continuous server-side simulation.",
+    tech: ["TypeScript", "Vite", "Canvas", "Supabase"],
+    liveUrl: "https://ztm-mars-colony.vercel.app",
+    githubUrl: "https://github.com/JacintoDesign/ztm-mars-colony",
+    screenshot: "/mars.jpg",
+    alt: "Mars Colony — isometric Mars survival simulation",
+  },
+  {
+    index: "04",
+    title: "Cosmos",
+    tags: ["Dashboard", "Web App", "2026"],
+    description:
+      "A quiet NASA observatory dashboard — live APOD, near-Earth objects, space weather and ISS tracking in a glassmorphic interface.",
+    tech: ["TypeScript", "Next.js", "MapLibre"],
+    liveUrl: "https://ztm-cosmos.vercel.app",
+    githubUrl: "https://github.com/JacintoDesign/ztm-cosmos",
+    screenshot: "/cosmos.jpg",
+    alt: "Cosmos — NASA observatory dashboard with live space data panels",
+  },
+  {
+    index: "05",
+    title: "Periodical",
+    tags: ["Editorial", "Magazine", "2026"],
+    description:
+      "A three-volume magazine on the history of web development — from the first server to AI-augmented engineering, with perspective page turns.",
+    tech: ["HTML", "CSS", "JavaScript"],
+    liveUrl: "https://jacintodesign.github.io/ztm-periodical/",
+    githubUrl: "https://github.com/JacintoDesign/ztm-periodical",
+    screenshot: "/periodical.jpg",
+    alt: "Periodical — three-volume magazine on the history of web development",
+  },
+  {
+    index: "06",
+    title: "Cube Lab",
+    tags: ["3D", "Playground", "2026"],
+    description:
+      "A vanilla Three.js Rubik's Cube playground — drag layers to turn, scramble and solve, with 2–6 layer grids.",
+    tech: ["JavaScript", "Three.js"],
+    liveUrl: "https://jacintodesign.github.io/3d-rubiks-cube/",
+    githubUrl: "https://github.com/JacintoDesign/3d-rubiks-cube",
+    screenshot: "/cube.jpg",
+    alt: "Cube Lab — interactive Three.js Rubik's Cube playground",
+  },
+  {
+    index: "07",
+    title: "Terra",
+    tags: ["3D", "Atlas", "2026"],
+    description:
+      "An interactive atlas of seven procedural 3D dioramas — forest, desert, alpine, coast, volcano, sakura and a lunar outpost.",
+    tech: ["JavaScript", "Three.js", "Vite"],
+    liveUrl: "https://ztm-3d-dioramas.vercel.app",
+    githubUrl: "https://github.com/JacintoDesign/3d-dioramas",
+    screenshot: "/dioramas.jpg",
+    alt: "Terra — atlas of seven procedural 3D dioramas",
+  },
+  {
+    index: "08",
     title: "ZTM Music",
     tags: ["Audio", "Web App", "2026"],
     description:
@@ -119,7 +185,19 @@ export const projects: Project[] = [
     alt: "ZTM Music — streaming player with queue, library and search",
   },
   {
-    index: "04",
+    index: "09",
+    title: "Waypoint",
+    tags: ["Geospatial", "Web App", "2026"],
+    description:
+      "Editorial, photo-forward travel guides — authors pin places on an interactive map, attach photos, and publish curated guides to a public link.",
+    tech: ["TypeScript", "Next.js", "Supabase", "PostGIS", "MapLibre"],
+    liveUrl: "https://ztm-waypoint.vercel.app",
+    githubUrl: "https://github.com/JacintoDesign/waypoint",
+    screenshot: "/waypoint.jpg",
+    alt: "Waypoint — photo-forward travel guide with an interactive map",
+  },
+  {
+    index: "10",
     title: "Scoundrel",
     tags: ["Game", "PWA", "2025"],
     description:

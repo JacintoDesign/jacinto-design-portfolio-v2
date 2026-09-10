@@ -64,21 +64,36 @@ export function About() {
             </p>
           </aside>
 
-          {/* No cyan border here — this panel carries no link, and the
-              palette reserves the accent for things you can act on. */}
           <aside
             aria-labelledby="now-heading"
-            className="rounded-card border border-muted/20 bg-surface p-8 transition-[translate] duration-300 motion-safe:hover:-translate-y-1 sm:p-10"
+            className="relative rounded-card border border-muted/20 bg-surface p-8 transition-[border-color,translate] duration-300 hover:border-accent/60 motion-safe:hover:-translate-y-1 sm:p-10"
           >
             <p className="mono-label text-muted">{about.nowPanel.label}</p>
             <h3
               id="now-heading"
               className="mt-4 font-display text-xl tracking-tight"
             >
-              {about.nowPanel.title}
+              {about.nowPanel.titleLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </h3>
             <p className="mt-3 leading-relaxed text-muted">
               {about.nowPanel.blurb}
+            </p>
+            <p className="mt-6">
+              <a
+                href={about.nowPanel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-accent before:absolute before:inset-0 before:content-['']"
+              >
+                <span className="link-sweep pb-1">
+                  {about.nowPanel.linkLabel}
+                </span>
+                <span className="sr-only"> (opens in new tab)</span>
+              </a>
             </p>
           </aside>
         </AboutCards>
