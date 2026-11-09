@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { site } from "@/lib/content";
+import { ArrowUpRightIcon } from "@/components/icons";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -15,8 +16,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
  * screenshots; nav links track the section in view, the active one in cyan
  * with its underline swept in (via aria-current + link-sweep), desktop
  * only. On narrow screens the bar collapses to the wordmark and a menu —
- * the glass stays. GSAP drives the scroll behaviour; Motion owns the
- * menu's mount and exit.
+ * the glass stays. A Portfolios disclosure after the section links opens a
+ * small panel of external live builds. GSAP drives the scroll behaviour;
+ * Motion owns the menu's and the panel's mount and exit.
  */
 
 // Where the inline nav gives way to the menu button. Must stay the
@@ -29,6 +31,21 @@ export function Header() {
   const [active, setActive] = useState<string | null>(null);
   const [glass, setGlass] = useState(false);
   const [open, setOpen] = useState(false);
+  const portfolios = useRef<HTMLLIElement>(null);
+  const portfoliosButton = useRef<HTMLButtonElement>(null);
+  const [portfoliosOpen, setPortfoliosOpen] = useState(false);
+
+  // Close the Portfolios panel on a press anywhere outside it.
+  useEffect(() => {
+    if (!portfoliosOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!portfolios.current?.contains(event.target as Node)) {
+        setPortfoliosOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [portfoliosOpen]);
 
   useGSAP(
     () => {
@@ -76,7 +93,11 @@ export function Header() {
       ref={root}
       className="fixed inset-x-0 top-0 z-50"
       onKeyDown={(event) => {
-        if (event.key === "Escape" && open) {
+        if (event.key !== "Escape") return;
+        if (portfoliosOpen) {
+          setPortfoliosOpen(false);
+          portfoliosButton.current?.focus();
+        } else if (open) {
           setOpen(false);
           menuButton.current?.focus();
         }
@@ -93,8 +114,13 @@ export function Header() {
           blend layer bypasses the sibling glass's backdrop blur (Chromium
           composites it against the unfiltered backdrop), so it hands off to
           normal rendering while the glass is engaged. The flip happens over
-          near-black, where difference reads as identity. */}
-      <div className={glass ? "relative" : "relative mix-blend-difference"}>
+          near-black, where difference reads as identity. The open Portfolios
+          panel sits inside this layer, so it takes the same hand-off. */}
+      <div
+        className={
+          glass || portfoliosOpen ? "relative" : "relative mix-blend-difference"
+        }
+      >
         <div className="mx-auto grid h-16 w-full max-w-[68rem] grid-cols-[1fr_auto_1fr] items-center px-6 sm:px-10">
           <a
             href="#main"
@@ -120,6 +146,57 @@ export function Header() {
                   </li>
                 );
               })}
+              <li
+                ref={portfolios}
+                className="relative"
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) {
+                    setPortfoliosOpen(false);
+                  }
+                }}
+              >
+                <button
+                  ref={portfoliosButton}
+                  type="button"
+                  aria-expanded={portfoliosOpen}
+                  aria-controls="portfolios-menu"
+                  onClick={() => setPortfoliosOpen((current) => !current)}
+                  className={`mono-label link-sweep pb-1 transition-colors duration-300 ${
+                    portfoliosOpen ? "text-fg" : "text-muted hover:text-fg"
+                  }`}
+                >
+                  {site.portfolios.label}
+                </button>
+                <MotionConfig reducedMotion="user">
+                  <AnimatePresence>
+                    {portfoliosOpen && (
+                      <motion.ul
+                        id="portfolios-menu"
+                        initial={{ opacity: 0, x: "-50%", y: -8 }}
+                        animate={{ opacity: 1, x: "-50%", y: 0 }}
+                        exit={{ opacity: 0, x: "-50%", y: -8 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="absolute top-full left-1/2 mt-5 w-max rounded-xl border border-fg/5 bg-surface/90 p-2 backdrop-blur-xl"
+                      >
+                        {site.portfolios.links.map((link) => (
+                          <li key={link.href}>
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setPortfoliosOpen(false)}
+                              className="mono-label flex items-center justify-between gap-6 rounded-lg px-4 py-3 text-muted transition-colors duration-300 hover:text-fg"
+                            >
+                              <span className="link-sweep pb-1">{link.label}</span>
+                              <ArrowUpRightIcon className="size-3 shrink-0" />
+                            </a>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </MotionConfig>
+              </li>
             </ul>
           </nav>
           <button
@@ -159,6 +236,27 @@ export function Header() {
                     </a>
                   </li>
                 ))}
+                <li className="mt-2 border-t border-fg/5 pt-4">
+                  <p className="mono-label py-2 text-muted/60">
+                    {site.portfolios.label}
+                  </p>
+                  <ul>
+                    {site.portfolios.links.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setOpen(false)}
+                          className="mono-label flex items-center gap-3 py-4 text-muted transition-colors duration-300 hover:text-fg"
+                        >
+                          {link.label}
+                          <ArrowUpRightIcon className="size-3" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
               </ul>
             </motion.nav>
           )}

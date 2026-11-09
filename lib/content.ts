@@ -302,4 +302,17 @@ export const site = {
     { label: "Work", href: "#work" },
     { label: "Contact", href: "#contact" },
   ],
+  // External live builds, shown as a disclosure menu after the section links.
+  portfolios: {
+    label: "Portfolios",
+    links: [
+      { label: "3D Space Portfolio", href: "https://ztm-3d-space-portfolio.vercel.app/" },
+      { label: "3D Tokyo Portfolio", href: "https://ztm-3d-portfolio.vercel.app/" },
+      {
+        label: "3D Tokyo Portfolio (Astra)",
+        href: "https://ztm-3d-portfolio-astra.vercel.app/",
+      },
+      { label: "Terminal", href: "https://jacinto-design-terminal.vercel.app/" },
+    ],
+  },
 };
